@@ -8,7 +8,7 @@ All examples are provides as is and is intended only for learning purposes. Some
 
 ## Repository Structure
 
-This repository contains separate folder for every practice lecture (for example for first lecture there is a folder named "Lecture 01").  
+This repository contains separate folder for every practice lecture (for example for first lecture there is a folder named "Lecture01").  
 Every practice lecture folder contains one or more subfolders for every topic that was discussed.
 
 ## Getting Started
@@ -17,3 +17,7 @@ Many examples are provided as *.dib files. It is a .NET Notebook file format. It
 
 All code examples that are provided as Visual Studio solutions (*.sln files) were tested and compiled using Visual Studio 2022 with the following workloads installed:
 ![workloads](images/vs_install.png)
+
+## Lectures
+
+- [Lecture 01](Lecture01/README.md)
