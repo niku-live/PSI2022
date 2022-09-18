@@ -12,3 +12,4 @@
       - [CLI](UiFrameworks/code/Console/CLI/)
     - Desktop:
       - [Windows Forms](UiFrameworks/code/Desktop/WinForms/)
+      - [WPF](UiFrameworks/code/Desktop/Wpf/)
