@@ -1,0 +1,24 @@
+﻿@page "/"
+
+<PageTitle>Counter</PageTitle>
+<div>
+    <img style="height:200px; vertical-align: middle;" src="dotnet_bot.png" />
+    <h1 style="font-size:32px; vertical-align: middle;">Hello, World!</h1>
+    <h2 style="font-size:18px; vertical-align: middle;">Welcome to Blazor</h2>    
+
+    <button class="btn btn-primary" @onclick="OnCounterClicked">@CounterBtnText</button>
+</div>
+@code {
+	private int count = 0;
+	private string CounterBtnText = "Click me";
+
+    private void OnCounterClicked()
+    {
+		count++;
+
+		if (count == 1)
+			CounterBtnText = $"Clicked {count} time";
+		else
+			CounterBtnText = $"Clicked {count} times";
+    }
+}

@@ -20,3 +20,5 @@
       - [Avalonia Platform](UiFrameworks/code/MultiPlatform/Avalonia/)
     - Web:
       - [Razor](UiFrameworks/code/Web/Razor/)
+      - [Blazor](UiFrameworks/code/Web/Blazor/)
+      - [UNO Platform](UiFrameworks/code/MultiPlatform/Uno/)
