@@ -10,3 +10,5 @@
     - Console:
       - [Terminal.Gui](UiFrameworks/code/Console/TerminalGui/)
       - [CLI](UiFrameworks/code/Console/CLI/)
+    - Desktop:
+      - [Windows Forms](UiFrameworks/code/Desktop/WinForms/)
