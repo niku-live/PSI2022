@@ -21,3 +21,4 @@ All code examples that are provided as Visual Studio solutions (*.sln files) wer
 ## Lectures
 
 - [Lecture 01](Lecture01/README.md)
+- [Lecture 02](Lecture02/README.md)

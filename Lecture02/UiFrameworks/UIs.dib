@@ -1,0 +1,200 @@
+#!markdown
+
+# UI Frameworks for .NET
+
+#!markdown
+
+## Console UI
+
+#!markdown
+
+### Terminal.Gui
+
+#!markdown
+
+[https://github.com/gui-cs/Terminal.Gui](https://github.com/gui-cs/Terminal.Gui)
+
+Supported platforms:
+- Windows (Classic Console, Windows Terminal
+- Linux (nCurses)
+- Mac OS
+
+Demo:
+![Demo](images/terminal.gif)
+
+#!pwsh
+
+dotnet add package Terminal.Gui
+
+#!markdown
+
+### CLI frameworks
+
+#!markdown
+
+- Sharprompt [https://github.com/shibayan/Sharprompt](https://github.com/shibayan/Sharprompt)
+- CommandDotNet [https://github.com/bilal-fazlani/commanddotnet](https://github.com/bilal-fazlani/commanddotnet)
+- Cocona [https://github.com/mayuki/Cocona](https://github.com/mayuki/Cocona)
+
+Supported platforms:
+- Windows (Classic Console, Windows Terminal
+- Linux (nCurses)
+- Mac OS
+
+#!csharp
+
+#r "nuget:Cocona"
+using Cocona;
+var consoleArgs = new string[] { };
+
+var app = CoconaApp.Create(consoleArgs);
+// ./myapp info
+app.AddCommand("info", () => Console.WriteLine("Show information"));
+
+// ./myapp server [command]
+app.AddSubCommand("server", x =>
+{
+    x.AddCommand("start", () => Console.WriteLine("Start"));
+    x.AddCommand("stop", () => Console.WriteLine("Stop"));
+})
+.WithDescription("Server commands");
+
+// ./myapp client [command]
+app.AddSubCommand("client", x =>
+{
+    x.AddCommand("connect", () => Console.WriteLine("Connect"));
+    x.AddCommand("disconnect", () => Console.WriteLine("Disconnect"));
+})
+.WithDescription("Client commands");
+
+app.Run();
+
+#!markdown
+
+## Desktop Apps
+
+#!markdown
+
+### Windows Forms
+
+#!markdown
+
+[How to](https://docs.microsoft.com/en-us/visualstudio/ide/create-csharp-winform-visual-studio?view=vs-2022)
+
+Supported platforms:
+- Windows XP+
+
+Example:
+
+![Demo](images/csharp-winform-form.png)
+
+#!markdown
+
+### WPF (Windows Presentation Foundation)
+
+#!markdown
+
+[How to](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/get-started/create-app-visual-studio?view=netdesktop-6.0)
+
+Supported platforms:
+- Windows Vista+
+
+Example:
+
+![Demo](images/wpf-app-finished.png)
+
+#!markdown
+
+### UWP (Universal Windows Platform)
+
+#!markdown
+
+[How to](https://docs.microsoft.com/en-us/visualstudio/get-started/csharp/tutorial-uwp?view=vs-2022)
+
+Supported platforms:
+- Windows (Desktop) 8+
+- Windows (IoT)
+- HoloLens
+- Xbox
+- SurfaceHub
+
+Example:
+
+![Demo](images/uwp-hello-world-app.png)
+
+#!markdown
+
+## Multi-platform Native Apps
+
+#!markdown
+
+### MAUI (Multi-Platform App UI)
+
+#!markdown
+
+[How to](https://docs.microsoft.com/en-us/dotnet/maui/get-started/first-app?tabs=vswin&pivots=devices-android)
+
+Supported Platforms:
+- Windows 10+
+- Android 5+
+- iOS 10+
+- macOS 10.15+
+
+Example:
+
+![Demo](images/maui-final-notelist.png)
+
+#!markdown
+
+### Uno Platform
+
+#!markdown
+
+[How to](https://platform.uno/docs/articles/get-started.html?tabs=windows)
+
+Supported platforms:
+- Windows:
+  - Windows Desktop 7+
+  - Windows IoT
+  - Xbox
+  - HoloLens
+  - SurfaceHub
+- Linux
+- Android 5+
+- iOS 8+
+- macOS 10.13+
+- Web (WebAssembly)
+- Tizen
+
+#!markdown
+
+### Avalonia platform
+
+#!markdown
+
+[How to](https://docs.avaloniaui.net/docs/getting-started)
+
+Supported platforms:
+- Windows 8+
+- Linux
+- macOS 10.13+
+
+#!markdown
+
+## Web
+
+#!markdown
+
+### Fully .NET
+
+- [Razor App](https://docs.microsoft.com/en-us/aspnet/core/tutorials/razor-pages/razor-pages-start?view=aspnetcore-6.0&tabs=visual-studio)
+- [Blazor App](https://dotnet.microsoft.com/en-us/learn/aspnet/blazor-tutorial/intro)
+- UNO App Web Assembly
+
+#!markdown
+
+### Javascript Front-end + .NET Back-end
+- [Angular + .NET Core](https://docs.microsoft.com/en-us/visualstudio/javascript/tutorial-asp-net-core-with-angular?view=vs-2022)
+- [React + .NET Core](https://docs.microsoft.com/en-us/visualstudio/javascript/tutorial-asp-net-core-with-react?view=vs-2022)
+- [Vue + .NET Core](https://docs.microsoft.com/en-us/visualstudio/javascript/tutorial-asp-net-core-with-vue?view=vs-2022)
+- [Vanilla JS/TS + .NET Core](https://docs.microsoft.com/en-us/visualstudio/javascript/tutorial-aspnet-with-typescript?view=vs-2022)
