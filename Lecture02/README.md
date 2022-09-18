@@ -6,3 +6,6 @@
 - [Enums](Enums/Enums.dib)
 - [Operator Overloading](OperatorOverloading/OperatorOverload.dib)
 - [UI Frameworks](UiFrameworks/UIs.dib)
+  - Project examples:
+    - Console:
+      - [Terminal.Gui](UiFrameworks/code/Console/TerminalGui/)
