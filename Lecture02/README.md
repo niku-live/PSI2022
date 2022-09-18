@@ -23,3 +23,4 @@
       - [Blazor](UiFrameworks/code/Web/Blazor/)
       - [UNO Platform](UiFrameworks/code/MultiPlatform/Uno/)
       - [Angular](UiFrameworks/code/MultiPlatform/Angular/)
+      - [React](UiFrameworks/code/MultiPlatform/React/)
