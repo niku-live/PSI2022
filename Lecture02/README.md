@@ -14,3 +14,5 @@
       - [Windows Forms](UiFrameworks/code/Desktop/WinForms/)
       - [WPF](UiFrameworks/code/Desktop/Wpf/)
       - [UWP](UiFrameworks/code/Desktop/Uwp/)
+    - Multi-platform:
+      - [MAUI](UiFrameworks/code/MultiPlatform/Maui/)
