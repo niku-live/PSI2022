@@ -18,3 +18,5 @@
       - [MAUI](UiFrameworks/code/MultiPlatform/Maui/)
       - [UNO Platform](UiFrameworks/code/MultiPlatform/Uno/)
       - [Avalonia Platform](UiFrameworks/code/MultiPlatform/Avalonia/)
+    - Web:
+      - [Razor](UiFrameworks/code/Web/Razor/)

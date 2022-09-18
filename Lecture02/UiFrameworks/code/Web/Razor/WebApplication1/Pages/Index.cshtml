@@ -1,0 +1,38 @@
+﻿@page
+
+@{
+    ViewData["Title"] = "Home page";
+    
+    @functions
+    {
+        public int Count { get; set; } = 0;
+        public string? CounterBtnText { get; set; } = "Click me";
+
+        public void OnPost()
+        {
+            LoadValues();
+            Count++;           
+            if (Count == 1)
+                CounterBtnText = $"Clicked {Count} time";
+            else
+                CounterBtnText = $"Clicked {Count} times";
+        }
+
+        private void LoadValues()
+        {
+            var count = this.HttpContext.Request.Form["Count"];
+            Count = count.Count > 0 ? int.Parse(count[0]) : 0;
+        }
+    }
+}
+
+<div class="text-center">
+    <img style="height:200px; vertical-align: middle;" src="dotnet_bot.png" />
+    <h1 style="font-size:32px; vertical-align: middle;">Hello, World!</h1>
+    <h2 style="font-size:18px; vertical-align: middle;">Welcome to Razor</h2>
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.Count, new { Value = "0" })
+        <button class="btn btn-default">@CounterBtnText</button>
+    }
+</div>
