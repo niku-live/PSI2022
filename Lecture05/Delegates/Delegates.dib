@@ -1,0 +1,112 @@
+#!csharp
+
+delegate void Example(string data);
+
+void Test1(string data)
+{
+    Console.WriteLine($"Test1: {data}");
+}
+
+void Test2(string data)
+{
+    Console.WriteLine($"Test2: {data}");
+}
+
+#!csharp
+
+Example d = Test1;
+d("Testing");
+
+#!csharp
+
+//Example d = Test2;
+//d("Testing");
+void Testing(string data, Example innerMethod)
+{
+    Console.WriteLine("Before");
+    innerMethod(data);
+    Console.WriteLine("After");
+}
+
+Testing("One", Test1);
+Testing("One", Test2);
+
+string Test3(string data)
+{
+    Console.WriteLine($"Test3: {data}");
+    return data;
+}
+
+void Testing2(string data)
+{    
+    Console.WriteLine("|Before");
+    Console.WriteLine(data);
+    Test3(data);
+    Console.WriteLine("|After");
+}
+
+Testing2(Test3("One"));
+
+#!csharp
+
+Example d = Test1;
+d += Test2;
+d("Testing");
+
+#!csharp
+
+Example d = Test1;
+d += Test2;
+d += Test2;
+d("Testing");
+
+#!csharp
+
+delegate int Example2(int a, int b);
+
+int Add(int a, int b)
+{
+    Console.WriteLine("Add");
+    return a + b;
+}
+
+int Mul(int a, int b)
+{
+    Console.WriteLine("Mul");
+    return a * b;
+}
+
+Example2 d2 = Add;
+int result = d2(5, 6);
+Console.WriteLine(result);
+
+#!csharp
+
+d2 = Mul;
+d2 += Add;
+d2 += Mul;
+Console.WriteLine(d2(2, 3));
+
+#!csharp
+
+d2 = (a, b) => a + b * a;
+
+Console.WriteLine(d2(3, 4));
+
+int Noname1(int a, int b)
+{
+    return a + b * a;
+}
+
+d2 = Noname1;
+
+Console.WriteLine(d2(3, 4));
+
+
+
+var data = new[] { 1, 2, 8, 7};
+
+Func<int, bool> del = d => d > 1 && d < 8;
+display(data.Where(del));
+
+display(data.Where(d => d > 1 && d < 8));
