@@ -15,6 +15,8 @@ Every practice lecture folder contains one or more subfolders for every topic th
 
 Many examples are provided as *.dib files. It is a .NET Notebook file format. It is best viewed using Visual Studio Code with .NET Notebooks extension installed ([full installation instructions](https://github.com/dotnet/interactive/blob/main/docs/install-dotnet-interactive.md#visual-studio-code))
 
+LINQ examples are provided as *.linq files. It is a LINQPad file format. Use [LINQPad tool](https://www.linqpad.net/Download.aspx) to view them. LINQPad is a tool for creating, testing and using LINQ queries.
+
 All code examples that are provided as Visual Studio solutions (*.sln files) were tested and compiled using Visual Studio 2022 with the following workloads installed:
 ![workloads](images/vs_install.png)
 
@@ -25,3 +27,5 @@ All code examples that are provided as Visual Studio solutions (*.sln files) wer
 - [Lecture 03](Lecture03/README.md)
 - [Lecture 04](Lecture04/README.md)
 - [Lecture 05](Lecture05/README.md)
+- [Lecture 06](Lecture06/README.md)
+- Lecture 07 - 1st Deadline.
