@@ -52,6 +52,14 @@ class Person
     public string LastName { get; set; }
 }
 
+enum TestEnum
+{
+    Value1,
+    Value2
+}
+
+delegate void TestDelegate(int a, int b);
+
 assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
 var types = assembly.GetTypes().Select(t => t.FullName);
