@@ -1,0 +1,43 @@
+#!markdown
+
+# Old Way
+
+#!csharp
+
+public class CustomEventArgs: EventArgs
+{
+    public string CustomField { get; set; }
+}
+
+public delegate void CustomEventHandler(object sender, CustomEventArgs args);
+
+public class CustomClass
+{
+    public event CustomEventHandler OnCustomEvent;
+
+    public void Execute()
+    {
+        OnCustomEvent(this, new CustomEventArgs() { CustomField = "Test" });
+    }
+}
+
+#!markdown
+
+# New Way
+
+#!csharp
+
+public class CustomEventArgs: EventArgs
+{
+    public string CustomField { get; set; }
+}
+
+public class CustomClass
+{
+    public event EventHandler<CustomEventArgs> OnCustomEvent;
+
+    public void Execute()
+    {
+        OnCustomEvent(this, new CustomEventArgs() { CustomField = "Test" });
+    }
+}

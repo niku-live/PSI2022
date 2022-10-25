@@ -1,0 +1,79 @@
+#!markdown
+
+# Lazy data type
+
+#!csharp
+
+class Person
+{
+    public string Name { get; set;}
+    public string LastName { get; set;}
+}
+
+var p = new Person() { Name = "John", LastName = "Smith" };
+
+var pl = new Lazy<Person>(() => new Person() { Name = "John", LastName = "Smith" });
+display(pl);
+display(pl.Value);
+display(pl);
+
+#!csharp
+
+class SlowPerson
+{
+    public string Name { get; set;}
+    public string LastName { get; set;}
+    
+    public SlowPerson()
+    {
+        System.Threading.Thread.Sleep(1000);
+    }
+}
+
+#!csharp
+
+var sw = new System.Diagnostics.Stopwatch();
+sw.Start();
+var globalPerson = new SlowPerson() { Name = "John", LastName = "Smith" };
+
+void Processing(bool usePerson)
+{
+    if (usePerson)
+    {
+        Console.WriteLine(globalPerson.LastName);
+    }
+    else
+    {
+        Console.WriteLine("No need for person");
+    }
+}
+
+Processing(usePerson: false);
+//Processing(usePerson: true);
+
+sw.Stop();
+display(sw.Elapsed);
+
+#!csharp
+
+var sw = new System.Diagnostics.Stopwatch();
+sw.Start();
+var globalPersonLazy = new Lazy<SlowPerson>(() => new SlowPerson() { Name = "John", LastName = "Smith" });
+
+void Processing(bool usePerson)
+{
+    if (usePerson)
+    {
+        Console.WriteLine(globalPersonLazy.Value.LastName);
+    }
+    else
+    {
+        Console.WriteLine("No need for person");
+    }
+}
+
+Processing(usePerson: false);
+//Processing(usePerson: true);
+
+sw.Stop();
+display(sw.Elapsed);
