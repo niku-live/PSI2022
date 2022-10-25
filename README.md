@@ -29,3 +29,4 @@ All code examples that are provided as Visual Studio solutions (*.sln files) wer
 - [Lecture 05](Lecture05/README.md)
 - [Lecture 06](Lecture06/README.md)
 - Lecture 07 - 1st Deadline.
+- [Lecture 08](Lecture08/README.md)
