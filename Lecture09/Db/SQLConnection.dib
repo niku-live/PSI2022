@@ -1,0 +1,152 @@
+#!markdown
+
+# SQL Connection - Simple example
+
+#!csharp
+
+#r "nuget:System.Data.SqlClient"
+using System.Data.SqlClient;
+
+using (var connection = new SqlConnection("Server=localhost;Database=demo_1;Trusted_Connection=True;"))
+{
+    connection.Open();
+
+    var command = new SqlCommand("SELECT TOP 1 [Name] FROM [Employees]", connection);
+    var result = command.ExecuteScalar();
+    Console.WriteLine($"{result}");    
+}
+
+#!markdown
+
+# SQL Connection - Data Reader
+
+#!csharp
+
+#r "nuget:System.Data.SqlClient"
+using System.Data.SqlClient;
+
+using (var connection = new SqlConnection("Server=localhost;Database=demo_1;Trusted_Connection=True;"))
+{
+    connection.Open();
+
+    var command = new SqlCommand("SELECT * FROM [Employees]", connection);             
+    var reader = command.ExecuteReader();
+    Console.WriteLine($"Column count: {reader.FieldCount}, visible: {reader.VisibleFieldCount}");
+    for (int colNo = 0; colNo < reader.FieldCount; colNo++)
+    {                    
+        Console.WriteLine($"{reader.GetName(colNo)} {reader.GetFieldType(colNo)}");
+    }
+    int rowCount = 0;
+    while (reader.Read())
+    {
+        rowCount++;
+        Console.WriteLine($"{reader[0]} {reader["Name"]} {reader[2]}");
+    }
+    Console.WriteLine($"Total Row Count: {rowCount}");
+    reader.Close();
+}
+
+#!markdown
+
+# SQL Connection - Create (simple example)
+
+#!csharp
+
+#r "nuget:System.Data.SqlClient"
+using System.Data.SqlClient;
+
+using (var connection = new SqlConnection("Server=localhost;Database=demo_1;Trusted_Connection=True;"))
+{
+    connection.Open();
+
+    string name = "A" + DateTime.Now.ToString("HHmmss");
+    string lastName = "B";
+
+    var insertSql = "INSERT INTO [dbo].[Employees]([Name],[LastName]) VALUES ('" + name + "','" + lastName + "')";
+    var command = new SqlCommand(insertSql, connection);
+    command.ExecuteNonQuery();
+}
+
+#!markdown
+
+# SQL Connection - Create (SQL Injection)
+
+#!csharp
+
+#r "nuget:System.Data.SqlClient"
+using System.Data.SqlClient;
+
+using (var connection = new SqlConnection("Server=localhost;Database=demo_1;Trusted_Connection=True;"))
+{
+    connection.Open();
+
+    string name = "A" + DateTime.Now.ToString("HHmmss");
+    string lastName = "B');DELETE FROM [Employees];--";
+
+    var insertSql = $"INSERT INTO [dbo].[Employees]([Name],[LastName]) VALUES ('{name}','{lastName}')";
+    insertSql = "INSERT INTO [dbo].[Employees]([Name],[LastName]) VALUES ('" + name + "','" + lastName + "')";
+    //INSERT INTO [dbo].[Employees]([Name],[LastName]) VALUES ('A','B');DELETE FROM [Employees];--')
+    var command = new SqlCommand(insertSql, connection);
+    command.ExecuteNonQuery();
+}
+
+#!markdown
+
+# SQL Connection - Create (SQL Params)
+
+#!csharp
+
+#r "nuget:System.Data.SqlClient"
+using (var connection = new SqlConnection("Server=localhost;Database=demo_1;Trusted_Connection=True;"))
+{
+    connection.Open();
+
+    string name = "A" + DateTime.Now.ToString("HHmmss");
+    string lastName = "B');DELETE FROM [Employees];--";
+
+    //Avoiding SQL injection
+    var insertSql = $"INSERT INTO [dbo].[Employees]([Name],[LastName]) VALUES (@name,@lastName)";
+    var command = new SqlCommand(insertSql, connection);
+    command.Parameters.AddWithValue("@name", name);
+    command.Parameters.AddWithValue("@lastName", lastName);
+    command.ExecuteNonQuery();
+}
+
+#!markdown
+
+# SQL Connection - Update
+
+#!csharp
+
+#r "nuget:System.Data.SqlClient"
+using (var connection = new SqlConnection("Server=localhost;Database=demo_1;Trusted_Connection=True;"))
+{
+    connection.Open();
+
+    string newName = "John" + DateTime.Now.ToString("HHmmss");
+    int employeeId = 1;
+
+    var insertSql = $"UPDATE [dbo].[Employees] SET [Name] = @name WHERE [EmployeeId] = @id";
+    var command = new SqlCommand(insertSql, connection);
+    command.Parameters.AddWithValue("@id", employeeId);
+    command.Parameters.AddWithValue("@name", newName);
+    command.ExecuteNonQuery();
+}
+
+#!markdown
+
+# SQL Connection - Delete
+
+#!csharp
+
+#r "nuget:System.Data.SqlClient"
+using (var connection = new SqlConnection("Server=localhost;Database=demo_1;Trusted_Connection=True;"))
+{
+    connection.Open();
+
+    int employeeId = 2;
+    var insertSql = $"DELETE FROM [dbo].[Employees] WHERE [EmployeeId] = @id";
+    var command = new SqlCommand(insertSql, connection);
+    command.Parameters.AddWithValue("@id", employeeId);
+    command.ExecuteNonQuery();
+}

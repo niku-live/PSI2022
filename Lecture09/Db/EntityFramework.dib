@@ -1,0 +1,119 @@
+#!markdown
+
+# EntityFramework.Core - Context and Model classes
+
+#!csharp
+
+#r "nuget:Microsoft.EntityFrameworkCore"
+#r "nuget:Microsoft.EntityFrameworkCore.Relational"
+#r "nuget:Microsoft.EntityFrameworkCore.SqlServer"
+#r "nuget:Microsoft.EntityFrameworkCore.Tools"
+#r "nuget:Microsoft.EntityFrameworkCore.Design"
+
+using Microsoft.EntityFrameworkCore;
+
+public partial class Employee
+{
+    public Employee()
+    {
+        Tasks = new HashSet<Task>();
+    }
+    public int EmployeeId { get; set; }
+    public string Name { get; set; }
+    public string LastName { get; set; }
+    public virtual ICollection<Task> Tasks { get; set; }
+}
+
+public class Task
+{
+    public int TaskId { get; set; }
+    public string TaskName { get; set; }
+    public int EmployeeEmployeeId { get; set; }
+    public virtual Employee Employee { get; set; }
+}
+
+public class TestDbContext: DbContext
+{
+    public DbSet<Employee> Employees { get; set; }
+    public DbSet<Task> Tasks { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.UseSqlServer("Server=localhost;Database=demo_1;Trusted_Connection=True;");
+    }
+}
+
+#!markdown
+
+# EntityFramework.Core - Simple Example
+
+#!csharp
+
+using Microsoft.EntityFrameworkCore;
+
+using (var context = new TestDbContext())
+{
+    var result = context.Employees.FirstOrDefault().Name;
+    Console.WriteLine($"{result}");
+}
+
+#!markdown
+
+# EntityFramework.Core - Data reading
+
+#!csharp
+
+using (var context = new TestDbContext())
+{
+    foreach(var employee in context.Employees)
+    {
+        Console.WriteLine($"{employee.EmployeeId} {employee.Name} {employee.LastName}");
+    }
+}
+
+#!markdown
+
+# EntityFramework.Core - Create
+
+#!csharp
+
+using (var context = new TestDbContext())
+{
+    string name = "A" + DateTime.Now.ToString("HHmmss");
+    string lastName = "B');DELETE FROM [Employees];--";
+
+    var newEmpl = new Employee()
+    {
+        Name = name,
+        LastName = lastName
+    };
+    context.Employees.Add(newEmpl);
+    context.SaveChanges();
+}
+
+#!markdown
+
+# EntityFramework.Core - Update
+
+#!csharp
+
+using (var context = new TestDbContext())
+{
+    var employeeToUpdate = context.Employees.FirstOrDefault(e => e.EmployeeId == 1);
+    employeeToUpdate.Name = "John" + DateTime.Now.ToString("HHmmss"); 
+    context.SaveChanges();
+}
+
+#!markdown
+
+# EntityFramework.Core - Delete
+
+#!csharp
+
+using (var context = new TestDbContext())
+{
+    var employeeToDelete = context.Employees.FirstOrDefault(e => e.EmployeeId == 2);
+    context.Employees.Remove(employeeToDelete);
+    context.SaveChanges();
+}

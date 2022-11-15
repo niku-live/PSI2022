@@ -1,0 +1,116 @@
+#!markdown
+
+# Async / Await
+
+#!csharp
+
+public async Task<string> GetResultAsync()
+{
+    await Task.Delay(1000);
+    return "test";
+}
+
+public async void TestAsync()
+{
+    var result = GetResultAsync();
+    Console.WriteLine("Some additional tasks perfomed in Caller method before GetResult is finished");
+    Console.WriteLine(await result);
+    Console.WriteLine("Some additional tasks perfomed in Caller method after GetResult is finished");
+    var result2 = GetResultAsync();
+    Console.WriteLine(await result2);
+    Console.WriteLine("Some additional tasks perfomed in Caller method after GetResult is finished 3");
+}
+
+
+var resultTask = GetResultAsync();
+Console.WriteLine("Some additional tasks perfomed in Caller method before GetResult is finished");
+resultTask.ContinueWith<Task>(result => 
+{ 
+    Console.WriteLine(result.Result); 
+    Console.WriteLine("Some additional tasks perfomed in Caller method after GetResult is finished");
+    return GetResultAsync();
+} ).ContinueWith(result2 => result2.ContinueWith((r) => {
+    Console.WriteLine(r.Result);
+    Console.WriteLine("Some additional tasks perfomed in Caller method after GetResult is finished 3");
+}))
+.RunSynchronously();
+
+#!markdown
+
+# Long running methods
+
+#!csharp
+
+using System.Diagnostics;
+using System.Threading;
+
+public class Performer
+{
+    public async Task CallerAsync()
+    {
+        var result = GetResultAsync("1");
+        Console.WriteLine("Some additional tasks perfomed in Caller method before GetResult is finished");
+        Console.WriteLine(await result);
+    }
+
+    public async Task<string> GetResultAsync(string number)
+    {
+        Console.WriteLine("GetResultAsync:Line1");
+        var veryImportantDataForFinalResult = GetVeryImportantDataAsync();
+        Console.WriteLine("GetResultAsync:Line2");
+        DoBackgroundWork();
+        Console.WriteLine("GetResultAsync:Line3");
+        Console.WriteLine(veryImportantDataForFinalResult.Status);
+        Console.WriteLine("GetResultAsync:Line4");
+        var data = await veryImportantDataForFinalResult;
+        Console.WriteLine("GetResultAsync:Line5");
+        return data;
+    }
+
+    public async Task<string> GetVeryImportantDataAsync()
+    {
+        Console.WriteLine("GetVeryImportantDataAsync:Line1");
+        await Task.Delay(10000);
+        Console.WriteLine("GetVeryImportantDataAsync:Line2");
+        return "<<<<<very important data>>>>>>>";
+    }
+
+    private void DoBackgroundWork()
+    {
+        Console.WriteLine("DoBackgroundWork:Start");
+        for (int i = 0; i < 4; i++)
+        {
+            if (i % 5 == 0)
+            {
+                //Console.Clear();
+                Console.WriteLine();
+                Console.Write("Loading");
+            }
+            Task.Delay(1000).Wait();
+            Console.Write(".");
+        }
+        Console.WriteLine();
+        Console.WriteLine("DoBackgroundWork:End");
+        //Console.Clear();
+    }
+}
+
+#!markdown
+
+# Execution without await
+
+#!csharp
+
+new Performer().CallerAsync();
+Console.WriteLine("Main method");
+
+await Task.Delay(11000);
+
+#!markdown
+
+# Execution with await
+
+#!csharp
+
+await new Performer().CallerAsync();
+Console.WriteLine("Main method");

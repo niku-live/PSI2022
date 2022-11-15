@@ -1,0 +1,66 @@
+#!markdown
+
+# Long Running Methods
+
+#!csharp
+
+using System.Diagnostics;
+using System.Threading;
+
+static double LongCalculations1()
+{
+    Thread.Sleep(1000);
+    return 10d;
+}
+
+static double LongCalculations2()
+{
+    Thread.Sleep(1000);
+    return 10d;
+}
+
+#!markdown
+
+# Sequential execution
+
+#!csharp
+
+static void RunSequential()
+{
+    double result = 0d;
+
+    result += LongCalculations1();
+    result += LongCalculations2();
+
+    Console.WriteLine("The result is {0}", result);
+}
+
+Stopwatch sw = Stopwatch.StartNew();
+RunSequential();
+Console.WriteLine("{0}ms!", sw.ElapsedMilliseconds);
+
+#!markdown
+
+# Execution using threads
+
+#!csharp
+
+static void RunWithThreads()
+{
+    double result = 0d;
+    var thread = new Thread(() => result = LongCalculations1());
+    thread.Start();
+    var thread2 = new Thread(() => result = LongCalculations1());
+    thread2.Start();
+
+    double result2 = LongCalculations2();
+    thread.Join();
+    thread2.Join();
+
+    result += result2;
+    Console.WriteLine("The result is {0}", result);
+}
+
+Stopwatch sw = Stopwatch.StartNew();
+RunWithThreads();
+Console.WriteLine("{0}ms!", sw.ElapsedMilliseconds);
