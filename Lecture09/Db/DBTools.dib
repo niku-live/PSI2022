@@ -1,0 +1,27 @@
+#!markdown
+
+# Fill Employee Data
+
+#!csharp
+
+#r "nuget:System.Data.SqlClient"
+using System.Data.SqlClient;
+
+using (var connection = new SqlConnection("Server=localhost;Database=demo_1;Trusted_Connection=True;"))
+{
+    connection.Open();
+    var insertSql = @"
+
+    DELETE FROM [Employees];
+
+    SET IDENTITY_INSERT dbo.Employees ON;
+    
+    INSERT INTO [Employees] (EmployeeId, Name, LastName) VALUES (1, 'John', 'Smith');
+    INSERT INTO [Employees] (EmployeeId, Name, LastName) VALUES (2, 'Pete', 'Peterson');
+    INSERT INTO [Employees] (EmployeeId, Name, LastName) VALUES (3, 'Angelica', 'Thomson');
+    
+    SET IDENTITY_INSERT dbo.Employees OFF; 
+    ";
+    var command = new SqlCommand(insertSql, connection);
+    command.ExecuteNonQuery();
+}

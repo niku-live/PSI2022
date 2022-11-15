@@ -1,0 +1,53 @@
+#!markdown
+
+# Common Resource - No Locks
+
+#!csharp
+
+const int NUMBER_OF_ITERATIONS = 32;
+int globalSum = 0;
+
+double result = 0d;
+Task[] tasks = new Task[NUMBER_OF_ITERATIONS];
+
+for (int i = 0; i < NUMBER_OF_ITERATIONS; i++)
+{
+    tasks[i] = Task.Run(() => 
+    { 
+        int cur = globalSum;
+        Task.Delay(NUMBER_OF_ITERATIONS - i /2 + 1);
+        globalSum = cur + 1;  
+    });
+}
+
+Task.WaitAll(tasks);
+Console.WriteLine(globalSum);
+
+#!markdown
+
+# Common Resource - With Locks
+
+#!csharp
+
+const int NUMBER_OF_ITERATIONS = 32;
+int globalSum = 0;
+object forGlobalLock = new object();
+
+double result = 0d;
+Task[] tasks = new Task[NUMBER_OF_ITERATIONS];
+
+for (int i = 0; i < NUMBER_OF_ITERATIONS; i++)
+{
+    tasks[i] = Task.Run(() => 
+    { 
+        lock (forGlobalLock)
+        {
+            int cur = globalSum;
+            Task.Delay(NUMBER_OF_ITERATIONS - i /2 + 1);
+            globalSum = cur + 1; 
+        }
+    });
+}
+
+Task.WaitAll(tasks);
+Console.WriteLine(globalSum);
