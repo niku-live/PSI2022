@@ -1,4 +1,4 @@
-# Lecture 8
+# Lecture 9
 
 ## What was discussed
 

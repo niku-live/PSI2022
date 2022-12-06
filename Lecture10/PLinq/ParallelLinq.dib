@@ -1,0 +1,167 @@
+#!markdown
+
+# Preparation
+
+#!csharp
+
+public int CalculatingNumberInVerySlowWay(int baseNumber)
+{        
+    var rnd = new Random(baseNumber);    
+    for (long i = 0; i < 100_000_000; i++)
+    {
+        baseNumber = rnd.Next();
+    }
+    return baseNumber;
+}
+
+void PrintList(IEnumerable<int> numbersCollection)
+{
+    var numbers = numbersCollection.ToList();
+    for(int i = 0; i < numbers.Count; i++)
+    {
+        Console.WriteLine($"{i}: {numbers[i]}");
+    }
+}
+
+var source = Enumerable.Range(1, 100);
+PrintList(source);
+
+#!markdown
+
+# Let's calculate numbers in very slow way
+
+#!markdown
+
+Very naive version
+
+#!csharp
+
+var slowResult = new List<int>();
+foreach(var n in source)
+{
+    slowResult.Add(CalculatingNumberInVerySlowWay(n));
+}
+PrintList(slowResult);
+
+#!markdown
+
+Shorter but still naive version
+
+#!csharp
+
+var slowResult = source.Select(n => CalculatingNumberInVerySlowWay(n)).ToList();
+PrintList(slowResult);
+
+#!markdown
+
+# Let's use Threads
+
+#!markdown
+
+Faster but almost unreadable version
+
+#!csharp
+
+using System.Threading;
+
+var threadResult = new List<int>();
+var threads = new List<Thread>();
+
+foreach (int n in source)
+{
+    var thread = new Thread(() => {    
+        int calculatedNumber = CalculatingNumberInVerySlowWay(n);
+        lock (threadResult)
+        {
+            threadResult.Add(calculatedNumber);
+        }
+    });
+    threads.Add(thread);
+}
+
+foreach(var thread in threads)
+{
+    thread.Start();
+}
+
+foreach(var thread in threads)
+{
+    thread.Join();
+}
+
+PrintList(threadResult);
+
+#!markdown
+
+Shorted (kinda more readable) version
+
+#!csharp
+
+using System.Threading;
+
+var threadResult = new List<int>();
+
+var threads = source.Select(n => new Thread(() => { 
+    
+    int calculatedNumber = CalculatingNumberInVerySlowWay(n);
+    lock (threadResult)
+    {
+        threadResult.Add(calculatedNumber);
+    }
+})).ToList();
+
+threads.ForEach(t => t.Start());
+threads.ForEach(t => t.Join());
+
+PrintList(threadResult);
+
+#!markdown
+
+Maybe we can do better with ConcurrentBag?
+
+#!csharp
+
+using System.Threading;
+using System.Collections.Concurrent;
+
+var threadResult = new ConcurrentBag<int>();
+
+var threads = source.Select(n => new Thread(() => threadResult.Add(CalculatingNumberInVerySlowWay(n)))).ToList();
+threads.ForEach(t => t.Start());
+threads.ForEach(t => t.Join());
+
+PrintList(threadResult);
+
+#!markdown
+
+# Let's go with tasks
+
+#!csharp
+
+var taskResult = Task.WhenAll<int>(source.Select(n => Task.Run<int>(() => CalculatingNumberInVerySlowWay(n)))).Result;
+PrintList(taskResult);
+
+#!markdown
+
+# Let's go with PLINQ
+
+#!csharp
+
+var parallelResult = source.AsParallel().Select(n => CalculatingNumberInVerySlowWay(n)).ToList();
+PrintList(parallelResult);
+
+#!csharp
+
+var parallelResult = source.AsParallel().WithDegreeOfParallelism(5).Select(n => CalculatingNumberInVerySlowWay(n)).ToList();
+
+#!csharp
+
+var parallelResult = source.AsParallel().WithDegreeOfParallelism(25).Select(n => CalculatingNumberInVerySlowWay(n)).ToList();
+
+#!csharp
+
+var parallelResult = source.AsParallel().WithDegreeOfParallelism(30).Select(n => CalculatingNumberInVerySlowWay(n)).ToList();
+
+#!csharp
+
+var parallelResult = source.AsParallel().WithDegreeOfParallelism(100).Select(n => CalculatingNumberInVerySlowWay(n)).ToList();

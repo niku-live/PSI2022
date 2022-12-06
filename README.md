@@ -31,3 +31,6 @@ All code examples that are provided as Visual Studio solutions (*.sln files) wer
 - Lecture 07 - 1st Deadline.
 - [Lecture 08](Lecture08/README.md)
 - [Lecture 09](Lecture09/README.md)
+- [Lecture 10](Lecture10/README.md)
+- Lecture 11 - 2nd Deadline.
+- Lecture 12 - [Middleware example analysis](http://kimutis.lt/source/12/MiddlewareExamples.rar)
